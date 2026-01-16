@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useMusicStore } from '@/lib/store';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Repeat, Repeat1, Shuffle, Heart, ListMusic } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Repeat, Repeat1, Shuffle, Heart, ListMusic, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { formatDuration } from '@/lib/sampleData';
 
@@ -223,11 +223,21 @@ export default function AudioPlayer() {
                         <div className="flex items-center gap-2 group/vol">
                             <button
                                 onClick={() => setVolume(volume > 0 ? 0 : 0.7)}
-                                className="p-2 text-muted-foreground hover:text-white transition-all duration-300 hover:scale-110"
+                                className="p-1 text-muted-foreground hover:text-white transition-all duration-300"
+                                title="Mute/Unmute"
                             >
-                                {volume === 0 ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                                {volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                             </button>
-                            <div className="w-24 flex items-center">
+
+                            <button
+                                onClick={() => setVolume(Math.max(0, +(volume - 0.05).toFixed(2)))}
+                                className="p-1 bg-white/5 rounded-md text-muted-foreground hover:text-white transition-all duration-200 flex items-center justify-center"
+                                title="Decrease volume"
+                            >
+                                <Minus className="w-3 h-3" />
+                            </button>
+
+                            <div className="w-20 flex items-center">
                                 <input
                                     type="range"
                                     min="0"
@@ -235,13 +245,21 @@ export default function AudioPlayer() {
                                     step="0.01"
                                     value={volume}
                                     onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                    className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer group-hover/vol:h-1.5 transition-all
-                                    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 
+                                    className="w-full h-0.5 bg-white/10 rounded-full appearance-none cursor-pointer group-hover/vol:h-1 transition-all
+                                    [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 
                                     [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white 
-                                    [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(0,0,0,0.5)]
-                                    hover:[&::-webkit-slider-thumb]:scale-125 [&::-webkit-slider-thumb]:transition-transform"
+                                    [&::-webkit-slider-thumb]:shadow-[0_0_6px_rgba(0,0,0,0.4)]
+                                    hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform"
                                 />
                             </div>
+
+                            <button
+                                onClick={() => setVolume(Math.min(1, +(volume + 0.05).toFixed(2)))}
+                                className="p-1 bg-white/5 rounded-md text-muted-foreground hover:text-white transition-all duration-200 flex items-center justify-center"
+                                title="Increase volume"
+                            >
+                                <Plus className="w-3 h-3" />
+                            </button>
                         </div>
                     </div>
                 </div>

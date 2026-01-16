@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Play, Pause, Loader2, Video } from 'lucide-react';
+import { Volume2, VolumeX, Play, Pause, Loader2, Video, Minus, Plus } from 'lucide-react';
 
 interface PexelsVideo {
     id: number;
@@ -311,12 +311,31 @@ function TrailerCard({ trailer, index, isController, isPlaying, isMuted, volume,
                 </div>
             </div>
 
-            <button
-                onClick={toggleMute}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/40 text-white backdrop-blur-md border border-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-            >
-                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            </button>
+            <div className="absolute top-4 right-4 flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                <button
+                    onClick={(e) => { e.stopPropagation(); if (!isController) return; setVolume(Math.max(0, +(volume - 0.05).toFixed(2))); }}
+                    className="p-1 rounded-md bg-black/40 text-white backdrop-blur-md border border-white/10 hover:bg-white/5"
+                    title="Decrease volume"
+                >
+                    <Minus className="w-3 h-3" />
+                </button>
+
+                <button
+                    onClick={(e) => { e.stopPropagation(); toggleMute(e); }}
+                    className="p-1 rounded-md bg-black/40 text-white backdrop-blur-md border border-white/10 hover:bg-white/5"
+                    title="Mute/Unmute"
+                >
+                    {isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                </button>
+
+                <button
+                    onClick={(e) => { e.stopPropagation(); if (!isController) return; setVolume(Math.min(1, +(volume + 0.05).toFixed(2))); }}
+                    className="p-1 rounded-md bg-black/40 text-white backdrop-blur-md border border-white/10 hover:bg-white/5"
+                    title="Increase volume"
+                >
+                    <Plus className="w-3 h-3" />
+                </button>
+            </div>
         </div>
     );
 }
