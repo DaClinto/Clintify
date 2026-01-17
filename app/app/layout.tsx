@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMusicStore } from '@/lib/store';
+import { Menu, Music } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import AudioPlayer from '@/components/AudioPlayer';
 import QueueSidebar from '@/components/QueueSidebar';
@@ -17,6 +18,7 @@ export default function AppLayout({
     const router = useRouter();
     const { currentUser, setCurrentUser, initializeLibrary } = useMusicStore();
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const mainRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -59,8 +61,41 @@ export default function AppLayout({
                 />
             </div>
 
+            {/* Mobile Header with Hamburger Menu */}
+            <div className="lg:hidden flex items-center justify-between p-3 bg-black/50 backdrop-blur-sm border-b border-white/5">
+                <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+                        <Music className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-white font-bold text-sm">CLINTIFY</span>
+                </div>
+                <button
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    className="p-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white transition-colors"
+                    aria-label="Toggle sidebar"
+                >
+                    <div className="flex flex-col gap-0.5">
+                        <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                    </div>
+                </button>
+            </div>
+
             <div className="flex-1 flex overflow-hidden relative">
-                <Sidebar />
+                {/* Mobile Sidebar Overlay */}
+                {sidebarOpen && (
+                    <div 
+                        className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                )}
+                
+                {/* Sidebar */}
+                <div className={`fixed lg:relative lg:translate-x-0 transform -translate-x-full transition-transform duration-300 ease-in-out z-50 lg:z-auto h-full w-64 ${sidebarOpen ? 'translate-x-0' : ''}`}>
+                    <Sidebar />
+                </div>
+                
                 <main
                     ref={mainRef}
                     onScroll={handleScroll}

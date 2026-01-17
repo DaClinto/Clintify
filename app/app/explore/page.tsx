@@ -37,7 +37,7 @@ export default function ExplorePage() {
             </div>
 
             {/* Content Section */}
-            <section className="animate-slide-up">
+            <section className="animate-slide-up my-[50px]">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-white/5 rounded-xl border border-white/10">
@@ -77,7 +77,7 @@ export default function ExplorePage() {
             </section>
 
             {/* Footer Tag */}
-            <div className="flex justify-center pt-12">
+            <div className="flex justify-center pt-12 mb-[50px]">
                 <div className="glass px-6 py-3 rounded-2xl flex items-center gap-3 border border-white/5 text-sm font-medium text-muted-foreground italic">
                     <Music className="w-4 h-4 text-primary" />
                     &quot;Music is the divine way to tell beautiful, poetic things to the heart.&quot;

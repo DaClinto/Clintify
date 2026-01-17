@@ -10,8 +10,8 @@ import { generateId } from '@/lib/sampleData';
 export default function LoginPage() {
     const router = useRouter();
     const { setCurrentUser } = useMusicStore();
-    const [email, setEmail] = useState('demo@clintify.com');
-    const [password, setPassword] = useState('demo123');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();

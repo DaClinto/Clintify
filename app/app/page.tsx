@@ -6,13 +6,14 @@ import TrackCard from '@/components/TrackCard';
 import VideoTrailers from '@/components/VideoTrailers';
 import FeaturedHero from '@/components/FeaturedHero';
 import NewsBlogs from '@/components/NewsBlogs';
+import LiveClock from '@/components/LiveClock';
 import { Clock, TrendingUp, Sparkles, Upload } from 'lucide-react';
 import { storage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import { Track } from '@/lib/types';
 
 export default function AppHomePage() {
-    const { tracks, playTrack, currentUser } = useMusicStore();
+    const { tracks, playTrack, currentUser, likedTrackIds } = useMusicStore();
     const [dbUploads, setDbUploads] = useState<Track[]>([]);
 
     // Fetch uploads from Supabase
@@ -35,7 +36,7 @@ export default function AppHomePage() {
                     duration: 0,
                     genre: 'Upload',
                     playCount: 0,
-                    isLiked: false,
+                    isLiked: likedTrackIds.includes(song.id), // Update like status based on current liked tracks
                     description: song.description,
                     posted_by: song.posted_by,
                     created_at: song.created_at
@@ -44,7 +45,7 @@ export default function AppHomePage() {
             }
         }
         fetchUploads();
-    }, []);
+    }, [likedTrackIds]); // Re-fetch when liked tracks change
 
     // Get recently played tracks
     const history = storage.getHistory();
@@ -74,17 +75,22 @@ export default function AppHomePage() {
         <div className="min-h-full bg-gradient-to-b from-primary/10 via-background to-background">
             {/* Header */}
             <div className="bg-gradient-to-b from-primary/20 to-transparent px-8 pt-6 pb-16">
-                <h1 className="text-4xl font-bold mb-1">
-                    Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                    Welcome back, {currentUser?.name}!
-                </p>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-5xl font-bold mb-1 text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-500 to-pink-500 drop-shadow-[0_4px_8px_rgba(168,85,247,0.3)] transform scale-105 transition-all duration-300 hover:scale-110 tracking-wide">
+                            Good morning
+                        </h1>
+                        <p className="text-xl text-muted-foreground font-light tracking-wide">
+                            Welcome back, <span className="text-lg font-semibold text-primary tracking-wide">tbsoso!</span>
+                        </p>
+                    </div>
+                    <LiveClock />
+                </div>
             </div>
 
             <div className="px-8 -mt-12 space-y-10 pb-8">
                 {/* Video Trailers Section */}
-                <div className="animate-slide-up delay-100">
+                <div className="animate-slide-up delay-100 mt-10">
                     <VideoTrailers />
                 </div>
 
